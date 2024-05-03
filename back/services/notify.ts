@@ -108,10 +108,15 @@ export default class NotificationService {
   private async goCqHttpBot() {
     const { goCqHttpBotQq, goCqHttpBotToken, goCqHttpBotUrl } = this.params;
     try {
+      const json = {
+        message: `${this.title}\n${this.content}`
+      }
+      const [k, v] = goCqHttpBotQq.split('=', 2)
+      json[k] = v
       const res: any = await got
         .post(`${goCqHttpBotUrl}?${goCqHttpBotQq}`, {
           ...this.gotOption,
-          json: { message: `${this.title}\n${this.content}` },
+          json,
           headers: { Authorization: 'Bearer ' + goCqHttpBotToken },
         })
         .json();
